@@ -1,19 +1,25 @@
 import express from "express";
 import {
-  registerUser,
-  loginUser,
-  forgotPassword,
-  resetPassword,
-} from "../controllers/authController.js";
+  login,
+  logout,
+  verifyEmail,
+  resendVerificationCode,
+  requestPasswordReset,
+  passwordReset,
+} from "../controllers/authControllers/barrel.js";
 
 const authRoutes = express.Router();
 
 authRoutes
-  .post("/register", registerUser)
-  .post("/login", loginUser)
+  .post("/login", login)
+  .get("/logout", logout)
 
-  // Password reset
-  .post("/forgot", forgotPassword)
-  .post("/reset", resetPassword);
+  // Verify email address
+  .post("/verify", verifyEmail)
+  .post("/resend", resendVerificationCode)
+
+  // Password Reset
+  .post("/pasword/resetRequest", requestPasswordReset)
+  .post("/pasword/reset", passwordReset);
 
 export default authRoutes;

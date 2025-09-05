@@ -1,5 +1,6 @@
 import { z } from "zod";
-export const commentCreateSchema = z.object({
+
+const commentCreateSchema = z.object({
   text: z
     .string()
     .min(1, "Text is required")
@@ -7,3 +8,5 @@ export const commentCreateSchema = z.object({
   images: z.array(z.string().url("Invalid image URL")).optional(),
   videos: z.array(z.string().url("Invalid video URL")).optional(),
 });
+const commentEditSchema = commentCreateSchema.partial();
+export { commentCreateSchema, commentEditSchema };

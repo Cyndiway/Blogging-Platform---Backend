@@ -10,6 +10,13 @@ const postSchema = new mongoose.Schema(
       maxlength: 150,
     },
     body: { type: String, required: true, trim: true, minlength: 10 },
+    content: {
+      type: String,
+      enum: ["text", "image", "video"],
+      default: "text",
+    },
+    images: { type: [String], default: [] },
+    videos: { type: [String], default: [] },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

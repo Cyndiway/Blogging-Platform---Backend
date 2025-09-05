@@ -1,15 +1,28 @@
-import express from "express";
-import { createPost, getPosts, updatePost, deletePost } from "../controllers/postController.js";
+import { Router } from "express";
+import {
+  createPost,
+  getAllPosts,
+  updatePost,
+  deletePost,
+  likePost,
+  unlikePost,
+  getPostById,
+} from "../controllers/postControllers/barrel.js";
 import { protect } from "../middleware/authMiddleware.js";
+import { isAdmin } from "../middleware/roleMiddleware.js";
 
-const router = express.Router();
+const postRouter = Router();
 
-router.route("/")
-  .get(getPosts)
-  .post(protect, createPost);
+postRouter
+  .post("/", protect, createPost)
 
-router.route("/:id")
-  .put(protect, updatePost)
-  .delete(protect, deletePost);
+  .get("/", getAllPosts)
+  .get("/:id", getPostById)
 
-export default router;
+  .put("/:id", protect, updatePost)
+  .delete("/:id", protect, isAdmin, deletePost);
+
+postRouter.post("/like/:id", protect, likePost);
+postRouter.post("/unlike/:id", protect, unlikePost);
+
+export default postRouter;

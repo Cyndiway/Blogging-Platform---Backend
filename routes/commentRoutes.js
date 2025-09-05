@@ -1,11 +1,26 @@
-import express from "express";
-import { addComment, getComments } from "../controllers/commentController.js";
+import Router from "express";
+import {
+  addComment,
+  getComment,
+  updateComment,
+  deleteComment,
+  restoreComment,
+  getAllComments,
+} from "../controllers/commentControllers/barrel.js";
 import { protect } from "../middleware/authMiddleware.js";
+import { isAdmin } from "../middleware/roleMiddleware.js";
 
-const router = express.Router({ mergeParams: true });
+const commentRouter = Router();
 
-router.route("/")
-  .get(getComments)
-  .post(protect, addComment);
+commentRouter
+  .post("/", addComment)
 
-export default router;
+  .get("/", getComment)
+  .get("/all", isAdmin, getAllComments)
+
+  .put("/:id", protect, updateComment)
+  .delete("/:id", protect, deleteComment)
+
+  .patch("/restore/:id", protect, restoreComment);
+
+export default commentRouter;
